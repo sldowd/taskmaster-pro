@@ -45,7 +45,37 @@ var saveTasks = function() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 };
 
+$(".list-group").on("click", "p", function() {
+  var text = $(this)
+    .text()
+    .trim();
+  var textInput = $("<textarea>")
+    .addClass("form-control")
+    .val(text);
+    $(this).replaceWith(textInput);
+    textInput.trigger("focus");
+});
 
+$("list.group").on("blur", "textarea", function() {
+  //get the textarea's current value
+  var text = $(this)
+    .val()
+    .trim();
+
+  //get parent ul's id attribute
+  var status = $(this)
+    .closest(".list-group")
+    .attr("id")
+    .replace("list-", "");
+
+  //get tasks position in the list of other li elements
+  var index = $(this)
+    .closest(".list-group.item")
+    .index();
+
+  tasks[status][index].text = text;
+  saveTasks();
+});
 
 
 // modal was triggered

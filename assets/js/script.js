@@ -101,12 +101,19 @@ $(".list-group").on("click", "span", function(){
     //swap out elements
   $(this).replaceWith(dateInput);
 
-    //automatically focus on new element
+  //enable jquery ui datepicker
+  dateInput.datepicker({
+    minDate: 1,
+    onClose: function() {
+      $(this).trigger("change");
+    }
+  });
   dateInput.trigger("focus");
+  
 });
 
 //due date was changed
-$(".list-group").on("blur", "input[type='text']", function() {
+$(".list-group").on("change", "input[type='text']", function() {
     //get current text
     var date = $(this)
       .val()
@@ -239,6 +246,13 @@ $("#trash").droppable({
     console.log("out");
   }
 });
+$("#modalDueDate").datepicker({
+  minDate: 1
+});
+var auditTask = function(taskEl) {
+  //to ensure element is getting to the function
+  console.log(taskEl);
+};
 // load tasks for the first time
 loadTasks();
 

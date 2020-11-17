@@ -139,7 +139,9 @@ $(".list-group").on("change", "input[type='text']", function() {
       .text(date);
     //replace input with span
     $(this).replaceWith(taskSpan);
-    
+
+    //pass task's <li> element into auditTask() to check new due date
+    auditTask($(taskSpan).closest(".list-group-item"));
   })
 
 
@@ -239,13 +241,12 @@ $("#trash").droppable({
   tolerance: "touch",
   drop: function(event, ui) {
     ui.draggable.remove();
-    console.log("drop");
   },
   over: function(event, ui) {
-    console.log("over");
+    //console.log("over");
   },
   out: function(even, ui) {
-    console.log("out");
+    //console.log("out");
   }
 });
 $("#modalDueDate").datepicker({
@@ -261,6 +262,9 @@ var auditTask = function(taskEl) {
   //apply new class if task is near/over due date
   if (moment().isAfter(time)) {
     $(taskEl).addClass("list-group-item-danger");
+  }
+  else if (Math.abs(moment().diff(time, "days")) <= 2) {
+    $(taskEl).addClass("list-group-item-warning");
   }
 };
 // load tasks for the first time
